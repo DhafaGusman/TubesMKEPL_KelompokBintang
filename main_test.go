@@ -12,9 +12,7 @@ var a App
 
 func TestMain(m *testing.M) {
 
-	a.Initialize(os.Getenv("APP_DB_USERNAME"),
-		os.Getenv("APP_DB_PASSWORD"),
-		os.Getenv("APP_DB_NAME"))
+	a.Initialize("test.db")
 
 	ensureTableExists()
 
@@ -32,7 +30,7 @@ func ensureTableExists() {
 
 func clearTable() {
 	a.DB.Exec("DELETE FROM users")
-	a.DB.Exec("ALTER SEQUENCE users_id_seq RESTART WITH 1")
+	a.DB.Exec("DELETE FROM sqlite_sequence WHERE name='users'")
 }
 
 func executeRequest(req *http.Request) *httptest.ResponseRecorder {
@@ -50,8 +48,7 @@ func checkResponseCode(t *testing.T, expected, actual int) {
 
 const tableCreationQuery = `CREATE TABLE IF NOT EXISTS users
 (
-    id SERIAL,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    age INTEGER,
-    CONSTRAINT users_pkey PRIMARY KEY (id)
+    age INTEGER
 )`

@@ -3,14 +3,13 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"strconv"
 
 	"github.com/gorilla/mux"
 
-	_ "github.com/lib/pq"
+	_ "modernc.org/sqlite"
 )
 
 type App struct {
@@ -18,12 +17,9 @@ type App struct {
 	DB     *sql.DB
 }
 
-func (a *App) Initialize(user, password, dbname string) {
-	connectionString :=
-		fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", user, password, dbname)
-
+func (a *App) Initialize(dbname string) {
 	var err error
-	a.DB, err = sql.Open("postgres", connectionString)
+	a.DB, err = sql.Open("sqlite", dbname)
 	if err != nil {
 		log.Fatal(err)
 	}
