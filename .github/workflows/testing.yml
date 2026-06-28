@@ -1,0 +1,29 @@
+name: Continuous Testing
+
+on:
+  push:
+    branches:
+      - master
+      - dhafa/continuous-testing
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Go Environment
+        uses: actions/setup-go@v5
+        with:
+          go-version: "stable"
+
+      - name: Install Dependencies
+        run: go mod tidy
+
+      - name: Run Unit Tests
+        run: go test -v ./...
