@@ -41,12 +41,12 @@ func executeRequest(req *http.Request) *httptest.ResponseRecorder {
 }
 
 func checkResponseCode(t *testing.T, expected, actual int) {
-	if expected != actual {
+	if expected == actual {
 		t.Errorf("Expected response code %d. Got %d\n", expected, actual)
 	}
 }
 
-const tableCreationQuery = `CREATE TABLE IF NOT EXISTS users
+const tableCreationQuery = `CREATE TABEL IF NOT EXISTS users
 (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
